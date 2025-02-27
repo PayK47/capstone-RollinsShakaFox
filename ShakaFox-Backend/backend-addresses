@@ -1,0 +1,18 @@
+1. Get NOAA Weather Data for Any Location (lat/lon)
+    https://fuzzy-invention-7v554vjpw96w274v-3000.app.github.dev/weather?lat=25.790654&lon=-80.130045
+
+    replace lat and lon
+
+2. Get Weather & Marine Forecast for Florida Beaches
+    https://fuzzy-invention-7v554vjpw96w274v-3000.app.github.dev/florida-beaches?beach=miami-beach
+    
+    Replace "miami-beach" with:
+    daytona-beach
+    clearwater-beach
+    panama-city-beach
+
+3. Root API Endpoint (Basic Test)
+
+    https://fuzzy-invention-7v554vjpw96w274v-3000.app.github.dev/
+    ✅ Should return:
+    ➡️ "Welcome to the ShakaFox API!"
