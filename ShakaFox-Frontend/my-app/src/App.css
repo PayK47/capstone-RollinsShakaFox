@@ -1,0 +1,175 @@
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  margin: 0;
+  background-color: #e3f6fa
+}
+
+h1 {
+  color:rgb(0, 0, 0);
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.top-bar {
+  width: 100%;
+  height: 60px;
+  background-color: #0153a4;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  z-index: 100;
+}
+
+.gear-btn {
+  font-size: 45px; /* Size of the gear icon */
+  background: none;
+  border: none;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  transition: 0.3s;
+  z-index: 300;
+}
+
+.gear-btn:hover {
+  color: #f1c40f; /* Change color on hover */
+}
+
+.center-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 120vh;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.shaka-image {
+  width: 400px;
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.beach-list {
+  margin-top: 20px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Parent Beach Container */
+.beach {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px; /* Space between beach items */
+}
+
+/* Dropdown animation - slide down effect */
+.bars-dropdown {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  width: 100%;
+  height: 0; /* Start collapsed */
+  overflow: hidden;
+  transition: height 0.3s ease; /* Smooth transition for height */
+}
+
+/* When the dropdown is open, animate height */
+.bars-dropdown.open {
+  height: auto; /* Automatically expand based on content */
+  padding: 10px; /* Add padding when open */
+}
+
+/* Bar item styling */
+.bar-item {
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.bar-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Beach Button Styling */
+.beach-btn {
+  background-color: #008CBA; /* Ocean Blue */
+  color: white;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  width: 100%;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.beach-btn:hover {
+  background-color: #00A8E8;
+}
+
+.beach-rank {
+  font-size: 18px;
+  color: #555;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+/* Flashy Message for 10/10 Beach */
+.flashy-message {
+  background-color: #f39c12; /* Flashy Yellow */
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  animation: flashAnimation 1.5s infinite alternate;
+  width: 100%;
+  z-index: 200;
+}
+
+/* Animation for the flashy message */
+@keyframes flashAnimation {
+  0% {
+    background-color: #f39c12;
+  }
+  100% {
+    background-color: #e74c3c;
+  }
+}
+
+/* Other Styles remain the same */
+
+
+
+
+
+
+
+
+
+
+
