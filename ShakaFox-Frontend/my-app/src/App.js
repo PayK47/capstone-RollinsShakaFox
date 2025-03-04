@@ -37,7 +37,7 @@ function App() {
       {/* Top bar */}
       <div className="top-bar">
         {/* Gear button links to external page */}
-        <button className="gear-btn" onClick={() => window.location.href = "https://www.example.com"}>
+        <button className="gear-btn" onClick={() => window.location.href = "https://rollinssports.com/sports/wswim/roster/kassy-mccoy/6152"}>
           &#9881;
         </button>
       </div>
