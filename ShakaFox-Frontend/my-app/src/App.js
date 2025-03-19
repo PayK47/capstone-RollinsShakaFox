@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
   const beachData = [
-    { name: "Miami Beach", bars: ["Tiki Bar", "Sunset Lounge", "Wave Riders"], temperature: 95, waveSize: 6, waveFrequency: 10 },
+    { name: "Miami Beach", bars: ["Tiki Bar", "Sunset Lounge", "Wave Riders"], temperature: 90, waveSize: 6, waveFrequency: 10 },
     { name: "Clearwater Beach", bars: ["Beach Club", "Surfer’s Haven", "Cocktail Cove"], temperature: 90, waveSize: 2, waveFrequency: 4 },
     { name: "Daytona Beach", bars: ["Samba Spirits", "Ocean Breeze", "Golden Sands"], temperature: 80, waveSize: 5, waveFrequency: 6 },
     { name: "Panama City Beach", bars: ["Aloha Bar", "Hula Hideaway", "Mango Tango"], temperature: 88, waveSize: 4, waveFrequency: 7 },
