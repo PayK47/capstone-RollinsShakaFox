@@ -59,16 +59,37 @@ async function fetchBeachData(beach) {
     }
     const marineText = await marineResponse.text();
 
-    const lines = marineText.split("\n");
-    let waveHeight = "N/A";
-    let windSpeed = "N/A";
-    let swellPeriod = "N/A";
+    // Split lines and filter out empty lines
+    const lines = marineText.split("\n").filter(line => line.trim());
 
-    lines.forEach(line => {
-        if (line.includes("WVHT")) { waveHeight = line.split(/\s+/)[1] + " m"; }
-        if (line.includes("WSPD")) { windSpeed = line.split(/\s+/)[1] + " m/s"; }
-        if (line.includes("DPD")) { swellPeriod = line.split(/\s+/)[1] + " s"; }
-    });
+    // 🔍 Find the correct header row dynamically
+    let headerIndex = lines.findIndex(line => line.includes("WVHT"));
+    if (headerIndex === -1 || headerIndex + 2 >= lines.length) {
+        console.error("⚠️ Could not find valid headers in NOAA response.");
+        return { error: "No valid buoy data found" };
+    }
+
+    // Extract headers and first real data row (skip the units row)
+    const headers = lines[headerIndex].trim().split(/\s+/);
+    const latestDataRow = lines[headerIndex + 2].trim().split(/\s+/); // Skip units row
+
+    console.log("🔍 Correct Headers from NOAA:", headers);
+    console.log("🔍 First Real Data Row:", latestDataRow);
+
+    // Function to get column value safely
+    const getValue = (colName) => {
+        const index = headers.indexOf(colName);
+        if (index === -1 || !latestDataRow[index] || latestDataRow[index] === "MM") {
+            return "N/A";
+        }
+        return latestDataRow[index];
+    };
+
+    const waveHeight = `${getValue("WVHT")} m`;
+    const windSpeed = `${getValue("WSPD")} m/s`;
+    const swellPeriod = `${getValue("DPD")} s`;
+
+    console.log(`✅ Parsed Data for ${beach}: Wave Height = ${waveHeight}, Wind Speed = ${windSpeed}, Swell Period = ${swellPeriod}`);
 
     return {
         beach,
@@ -81,6 +102,8 @@ async function fetchBeachData(beach) {
         }
     };
 }
+
+
 
 async function getCachedData(beach) {
     const now = Date.now();
