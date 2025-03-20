@@ -1,4 +1,4 @@
-// Enhanced Backend to Include Air Temperature from NWS API
+// Enhanced Backend with Caching Mechanism
 import express from 'express';
 import fetch from 'node-fetch';
 
@@ -8,6 +8,10 @@ const PORT = process.env.PORT || 3000;
 // Enable CORS
 import cors from "cors";
 app.use(cors());
+
+// Cache object to store data with timestamps
+let cache = {};
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
 
 // Mapping for popular Florida beaches with their latitude and longitude.
 const floridaBeaches = {
@@ -28,12 +32,9 @@ const buoyStations = {
 async function fetchBuoyData(stationId) {
   try {
     const url = `https://www.ndbc.noaa.gov/data/realtime2/${stationId}.txt`;
-    console.log(`Fetching buoy data from: ${url}`);
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Buoy ${stationId} fetch failed: ${response.status}`);
     const data = await response.text();
-    console.log(`Raw data from buoy ${stationId}:
-${data}`);
     return data;
   } catch (error) {
     console.error(`Error fetching buoy data: ${error.message}`);
@@ -48,12 +49,10 @@ async function fetchAirTemperature(lat, lon) {
     if (!response.ok) throw new Error(`NWS Point API failed: ${response.status}`);
     const data = await response.json();
     const forecastUrl = data.properties.forecast;
-    console.log(`Fetching forecast from: ${forecastUrl}`);
     const forecastResponse = await fetch(forecastUrl);
     if (!forecastResponse.ok) throw new Error(`NWS Forecast API failed: ${forecastResponse.status}`);
     const forecastData = await forecastResponse.json();
     const temperature = forecastData.properties.periods[0].temperature;
-    console.log(`Air temperature found: ${temperature}°F`);
     return temperature;
   } catch (error) {
     console.error(`Error fetching air temperature: ${error.message}`);
@@ -63,8 +62,6 @@ async function fetchAirTemperature(lat, lon) {
 
 function parseBuoyData(rawData) {
   const lines = rawData.split("\n").filter(line => line.trim());
-  console.log("Parsing buoy data:", lines.slice(0, 5));
-
   const headers = lines[0].split(/\s+/);
   let waveHeight = "N/A";
   let windSpeed = "N/A";
@@ -79,17 +76,14 @@ function parseBuoyData(rawData) {
 
       if (waveHeight === "N/A" && currentData[waveIndex] !== "MM") {
         waveHeight = parseFloat(currentData[waveIndex]);
-        console.log(`Found wave height: ${waveHeight} at row ${i}`);
       }
 
       if (windSpeed === "N/A" && currentData[windIndex] !== "MM") {
         windSpeed = parseFloat(currentData[windIndex]);
-        console.log(`Found wind speed: ${windSpeed} at row ${i}`);
       }
 
       if (swellPeriod === "N/A" && currentData[swellIndex] !== "MM") {
         swellPeriod = parseFloat(currentData[swellIndex]);
-        console.log(`Found swell period: ${swellPeriod} at row ${i}`);
       }
 
       if (waveHeight !== "N/A" && windSpeed !== "N/A" && swellPeriod !== "N/A") {
@@ -98,7 +92,6 @@ function parseBuoyData(rawData) {
     }
   }
 
-  console.log("Final parsed data:", { waveHeight, windSpeed, swellPeriod });
   return {
     waveHeight,
     windSpeed,
@@ -107,6 +100,15 @@ function parseBuoyData(rawData) {
 }
 
 async function fetchCombinedBuoyData(beach) {
+  const cacheEntry = cache[beach];
+  const now = Date.now();
+
+  if (cacheEntry && (now - cacheEntry.timestamp < CACHE_DURATION)) {
+    console.log(`Serving cached data for ${beach}`);
+    return cacheEntry.data;
+  }
+
+  console.log(`Fetching new data for ${beach}`);
   const { wave, wind } = buoyStations[beach];
   const { lat, lon } = floridaBeaches[beach];
 
@@ -117,12 +119,15 @@ async function fetchCombinedBuoyData(beach) {
   const waveParsed = waveData ? parseBuoyData(waveData) : { waveHeight: "N/A", swellPeriod: "N/A" };
   const windParsed = windData ? parseBuoyData(windData) : { windSpeed: "N/A" };
 
-  return {
+  const combinedData = {
     waveHeight: waveParsed.waveHeight,
     windSpeed: windParsed.windSpeed,
     temperature: airTemperature,
     swellPeriod: waveParsed.swellPeriod
   };
+
+  cache[beach] = { data: combinedData, timestamp: now };
+  return combinedData;
 }
 
 app.get('/florida-beaches', async (req, res) => {
