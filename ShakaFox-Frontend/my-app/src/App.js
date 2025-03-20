@@ -1,4 +1,4 @@
-// Enhanced App.js to Handle 'N/A' Values
+// Enhanced App.js with Dropdown Fix
 import { useState, useEffect } from 'react';
 import './App.css';
 
@@ -6,17 +6,40 @@ function App() {
   const [beachData, setBeachData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedVariables, setSelectedVariables] = useState(["temperature", "waveSize", "waveFrequency"]);
+  const [selectedVariables, setSelectedVariables] = useState(["temperature", "waveSize", "windSpeed", "swellPeriod"]);
   const [openBeach, setOpenBeach] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
 
   const calculateRank = (temperature, waveSize, waveFrequency, windSpeed) => {
-    const tempRank = Math.min(Math.max((temperature - 70) / 15 * 10, 0), 10); // 70°F to 85°F is 0 to 10
-    const waveHeightRank = Math.min(Math.max((waveSize - 1) / 4 * 10, 0), 10); // 1m to 5m is 0 to 10
-    const waveFrequencyRank = Math.min(Math.max((waveFrequency - 5) / 5 * 10, 0), 10); // 5s to 10s is 0 to 10
-    const windSpeedRank = Math.min(Math.max((15 - windSpeed) / 15 * 10, 0), 10); // 0m/s to 15m/s is 10 to 0
+    const ranks = [];
+    let totalWeight = 0;
 
-    const totalRank = (tempRank + waveHeightRank + waveFrequencyRank + windSpeedRank) / 4;
+    if (selectedVariables.includes("temperature")) {
+      const tempRank = Math.min(Math.max((temperature - 70) / 15 * 10, 0), 10); // 70°F to 85°F is 0 to 10
+      ranks.push(tempRank);
+      totalWeight++;
+    }
+
+    if (selectedVariables.includes("waveSize")) {
+      const waveHeightRank = Math.min(Math.max((waveSize - 0.5) / 4 * 10, 0), 10); // 0.5m to 5m is 0 to 10
+      ranks.push(waveHeightRank);
+      totalWeight++;
+    }
+
+    if (selectedVariables.includes("swellPeriod")) {
+      const waveFrequencyRank = Math.min(Math.max((waveFrequency - 2) / 5 * 10, 0), 10); // 2s to 10s is 0 to 10
+      ranks.push(waveFrequencyRank);
+      totalWeight++;
+    }
+
+    if (selectedVariables.includes("windSpeed")) {
+      const windSpeedRank = Math.min(Math.max((15 - windSpeed) / 15 * 10, 0), 10); // 0m/s to 15m/s is 10 to 0
+      ranks.push(windSpeedRank);
+      totalWeight++;
+    }
+
+    if (ranks.length === 0) return 0;
+    const totalRank = ranks.reduce((a, b) => a + b, 0) / totalWeight;
     return totalRank;
   };
 
@@ -71,7 +94,7 @@ function App() {
     }
 
     fetchBeachData();
-  }, []);
+  }, [selectedVariables]);
 
   const toggleDropdown = (beachName) => {
     setOpenBeach(openBeach === beachName ? null : beachName);
@@ -90,12 +113,12 @@ function App() {
           <button className="gear-btn" onClick={() => setShowOptions(!showOptions)}>&#x1F50D;</button>
           {showOptions && (
             <div className="options-dropdown below-button">
-              {["temperature", "waveSize", "waveFrequency"].map((variable, index) => (
+              {["Temperature", "Wave Size", "Windspeed", "Swell Duration"].map((variable, index) => (
                 <div key={index} className="option-item">
                   <input
                     type="checkbox"
-                    checked={selectedVariables.includes(variable)}
-                    onChange={() => toggleVariable(variable)}
+                    checked={selectedVariables.includes(variable.toLowerCase().replace(" ", ""))}
+                    onChange={() => toggleVariable(variable.toLowerCase().replace(" ", ""))}
                   />
                   {variable}
                 </div>
@@ -125,7 +148,7 @@ function App() {
                 </button>
                 <span className="beach-rank">{beach.rank.toFixed(1)}</span>
                 {openBeach === beach.name && (
-                  <div className="bars-dropdown open">
+                  <div className="beach-details">
                     <p>Temperature: {beach.temperature}°F</p>
                     <p>Wave Height: {beach.waveSize} m</p>
                     <p>Swell Period: {beach.waveFrequency} sec</p>
