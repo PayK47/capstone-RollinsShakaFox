@@ -226,3 +226,31 @@ h1 {
     transform: scale(1.05); /* Added scale effect */
   }
 }
+
+.beach-link {
+  display: block;
+  margin-top: 8px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.beach-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.beach-page {
+  text-align: center;
+  padding: 20px;
+}
+
+.beach-page h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.beach-page p {
+  font-size: 1.2rem;
+  color: #555;
+}
