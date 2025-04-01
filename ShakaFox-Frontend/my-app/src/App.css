@@ -26,7 +26,7 @@ h1 {
   font-weight: bold;
   text-align: center;
   word-wrap: break-word;     /* Prevents overflow on long words */
-  margin-top: 30px;          /* Adds space above the heading */
+  margin-top: 10px;          /* Adds space above the heading */
 }
 
 /* === Subtitle Style === */
@@ -34,15 +34,15 @@ h1 {
   font-size: 1.5rem;
   text-align: center;
   color: #333;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 /* === Top Bar/Header === */
 .top-bar {
   width: 100%;
   height: 80px;
-  background-color: #0153a4; /* Deep blue */
+  background-color: #0072BC; /* Deep blue */
   position: relative;        /* Needed for the pseudo-element */
   display: flex;
   justify-content: flex-end; /* Push items to the right */
@@ -122,7 +122,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 80px;           /* Offset from top bar */
+  padding-top: 20px;           /* Offset from top bar */
   box-sizing: border-box;
   height: auto;
 }
@@ -208,7 +208,7 @@ h1 {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background-color: #008CBA; /* Bright blue */
+  background-color: #0072BC; /* Bright blue */
   color: white;
   gap: 12px;
   padding: 12px 20px;
