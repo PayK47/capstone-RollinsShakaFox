@@ -130,6 +130,7 @@ function App() {
 
       <div className="center-container">
         <h1>ShakaFox</h1>
+        <div className="subtitle">Where is the best place to surf today?</div>
         <img src="/Wide-Fox.webp" alt="Shaka Fox" className="shaka-image" />
 
         {loading ? (
@@ -144,9 +145,12 @@ function App() {
                   className={`beach-btn ${beach.rank >= 9 ? 'high-rank' : ''}`}
                   onClick={() => toggleDropdown(beach.name)}
                 >
-                  {beach.name} ⏷
+                  <span className="beach-score">{isNaN(beach.rank) ? "N/A" : beach.rank.toFixed(0)}</span>
+                  <span>{beach.name}</span>
+                  <span className="dropdown-arrow">
+                    {openBeach === beach.name ? '⏶' : '⏷'}
+                  </span>
                 </button>
-                <span className="beach-rank">{beach.rank.toFixed(1)}</span>
                 {openBeach === beach.name && (
                   <div className="beach-details">
                     <p>Temperature: {beach.temperature}°F</p>
