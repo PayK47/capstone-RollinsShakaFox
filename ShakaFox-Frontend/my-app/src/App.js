@@ -15,6 +15,14 @@ function App() {
   const [openBeach, setOpenBeach] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
 
+  const beachRoutes = {
+    "miami beach": "/miami",
+    "daytona beach": "/daytona",
+    "clearwater beach": "/clearwater",
+    "panama city beach": "/panamacity"
+  };
+
+
   const calculateRank = (temperature, waveSize, waveFrequency, windSpeed) => {
     const ranks = [];
     let totalWeight = 0;
@@ -165,7 +173,7 @@ function App() {
                           <p>Wave Height: {beach.waveSize} m</p>
                           <p>Swell Period: {beach.waveFrequency} sec</p>
                           <p>Wind Speed: {beach.windSpeed} m/s</p>
-                          <Link to={`/${beach.name.toLowerCase().replace(/ /g, "")}`} className="more-details-link">
+                          <Link to={beachRoutes[beach.name.toLowerCase()] || "#"} className="more-details-link">
                             More Details →
                           </Link>
 
