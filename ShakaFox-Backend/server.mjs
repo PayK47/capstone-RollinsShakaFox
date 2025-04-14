@@ -29,6 +29,7 @@ const floridaBeaches = {
   "new-smyrna-beach": { lat: 29.0258, lon: -80.9270 }
 };
 
+// Mapping of beaches to closest NOAA buoy stations for wave height and wind speed
 const buoyStations = {
   "miami-beach": { wave: "41114", wind: "41009" },
   "daytona-beach": { wave: "41113", wind: "41009" },
@@ -43,7 +44,6 @@ const buoyStations = {
   "venice-beach": { wave: "42036", wind: "VENF1" },
   "new-smyrna-beach": { wave: "41113", wind: "41009" }
 };
-
 
 async function fetchBuoyData(stationId) {
   try {
@@ -82,12 +82,14 @@ function parseBuoyData(rawData) {
   let waveHeight = "N/A";
   let windSpeed = "N/A";
   let swellPeriod = "N/A";
+  let windDirection = "N/A";
 
   for (let i = 2; i < lines.length; i++) {
     const currentData = lines[i].split(/\s+/);
     if (currentData.length === headers.length) {
       const waveIndex = headers.indexOf("WVHT");
       const windIndex = headers.indexOf("WSPD");
+  const windDirIndex = headers.indexOf("WDIR");
       const swellIndex = headers.indexOf("DPD");
 
       if (waveHeight === "N/A" && currentData[waveIndex] !== "MM") {
@@ -96,6 +98,10 @@ function parseBuoyData(rawData) {
 
       if (windSpeed === "N/A" && currentData[windIndex] !== "MM") {
         windSpeed = parseFloat(currentData[windIndex]);
+      }
+
+      if (windDirection === "N/A" && currentData[windDirIndex] !== "MM") {
+        windDirection = parseFloat(currentData[windDirIndex]);
       }
 
       if (swellPeriod === "N/A" && currentData[swellIndex] !== "MM") {
@@ -111,7 +117,8 @@ function parseBuoyData(rawData) {
   return {
     waveHeight,
     windSpeed,
-    swellPeriod
+    swellPeriod,
+    windDirection
   };
 }
 
@@ -139,7 +146,8 @@ async function fetchCombinedBuoyData(beach) {
     waveHeight: waveParsed.waveHeight,
     windSpeed: windParsed.windSpeed,
     temperature: airTemperature,
-    swellPeriod: waveParsed.swellPeriod
+    swellPeriod: waveParsed.swellPeriod,
+    windDirection: windParsed.windDirection
   };
 
   cache[beach] = { data: combinedData, timestamp: now };
