@@ -1,11 +1,34 @@
-// Enhanced App.js with Dropdown Fix
-import { BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom';
+// Enhanced App.js using HomePage Component
+import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
 import Miami from './Miami';
 import Daytona from './Daytona';
 import Clearwater from './Clearwater';
 import PanamaCity from './PanamaCity';
+import HomePage from './HomePage';
+
+const offshoreDirections = {
+  "miami beach": 270,
+  "daytona beach": 270,
+  "clearwater beach": 90,
+  "panama city beach": 90,
+  "fort lauderdale": 270,
+  "west palm beach": 270,
+  "jacksonville beach": 270,
+  "naples beach": 90,
+  "siesta key": 90,
+  "key west": 90,
+  "venice beach": 90,
+  "new smyrna beach": 270
+};
+
+function isOffshoreWind(beachName, windDir) {
+  const offshoreDir = offshoreDirections[beachName.toLowerCase()];
+  if (offshoreDir === undefined || windDir === "N/A") return false;
+  const diff = Math.abs(offshoreDir - windDir);
+  return diff <= 45 || diff >= 315;
+}
 
 function App() {
   const [beachData, setBeachData] = useState([]);
@@ -13,74 +36,64 @@ function App() {
   const [error, setError] = useState(null);
   const [selectedVariables, setSelectedVariables] = useState(["temperature", "waveSize", "windSpeed", "swellPeriod"]);
   const [openBeach, setOpenBeach] = useState(null);
+  const [weights, setWeights] = useState({
+    temperature: 5,
+    waveHeight: 5,
+    swellPeriod: 5,
+    windSpeed: 5
+  });
   const [showOptions, setShowOptions] = useState(false);
 
   const beachRoutes = {
     "miami beach": "/miami",
     "daytona beach": "/daytona",
     "clearwater beach": "/clearwater",
-    "panama city beach": "/panamacity",
-    "fort lauderdale": "/fortlauderdale",
-    "west palm beach": "/westpalm",
-    "jacksonville beach": "/jacksonville",
-    "naples beach": "/naples",
-    "siesta key": "/siestakey",
-    "key west": "/keywest",
-    "venice beach": "/venice",
-    "new smyrna beach": "/newsmyrna"
+    "panama city beach": "/panamacity"
   };
-  
-  const calculateRank = (temperature, waveSize, waveFrequency, windSpeed) => {
+
+  const calculateRank = (temperature, waveSize, waveFrequency, windSpeed, windDirection, beachName) => {
     const ranks = [];
     let totalWeight = 0;
-
-    if (selectedVariables.includes("temperature")) {
-      const tempRank = Math.min(Math.max((temperature - 70) / 15 * 10, 0), 10); // 70°F to 85°F is 0 to 10
-      ranks.push(tempRank);
-      totalWeight++;
-    }
-
-    if (selectedVariables.includes("waveSize")) {
-      const waveHeightRank = Math.min(Math.max((waveSize - 0.5) / 4 * 10, 0), 10); // 0.5m to 5m is 0 to 10
-      ranks.push(waveHeightRank);
-      totalWeight++;
-    }
-
-    if (selectedVariables.includes("swellPeriod")) {
-      const waveFrequencyRank = Math.min(Math.max((waveFrequency - 2) / 5 * 10, 0), 10); // 2s to 10s is 0 to 10
-      ranks.push(waveFrequencyRank);
-      totalWeight++;
-    }
-
-    if (selectedVariables.includes("windSpeed")) {
-      const windSpeedRank = Math.min(Math.max((15 - windSpeed) / 15 * 10, 0), 10); // 0m/s to 15m/s is 10 to 0
-      ranks.push(windSpeedRank);
-      totalWeight++;
-    }
-
-    if (ranks.length === 0) return 0;
-    const totalRank = ranks.reduce((a, b) => a + b, 0) / totalWeight;
-    return totalRank;
+    const scaleFactor = 2;
+    const power = 1.5;
+  
+    // Adjusted temperature scale (65–90°F → 0–10)
+    const tempRank = Math.min(Math.max((temperature - 65) / 25 * 10, 0), 10);
+    ranks.push(Math.pow(tempRank, 1.1) * Math.pow(weights.temperature, power) * scaleFactor);
+    totalWeight += Math.pow(weights.temperature, power) * scaleFactor;
+  
+    // Adjusted wave height (ft) from 0.01 to 8 ft → 0–10
+    const waveFeet = waveSize * 3.28084;
+    const waveRank = Math.min(Math.max((waveFeet - 0.01) / 7.99 * 10, 0), 10);
+    ranks.push(Math.pow(waveRank, 1.1) * Math.pow(weights.waveHeight, power) * scaleFactor);
+    totalWeight += Math.pow(weights.waveHeight, power) * scaleFactor;
+  
+    // Adjusted swell period (1–18 sec → 0–10)
+    const swellRank = Math.min(Math.max((waveFrequency - 1) / 17 * 10, 0), 10);
+    ranks.push(Math.pow(swellRank, 1.1) * Math.pow(weights.swellPeriod, power) * scaleFactor);
+    totalWeight += Math.pow(weights.swellPeriod, power) * scaleFactor;
+  
+    // Adjusted wind speed (25 mph is now ideal offshore baseline)
+    const windMph = windSpeed * 2.23694;
+    let windBase = Math.min(Math.max((25 - windMph) / 25 * 10, 0), 10);
+    windBase += isOffshoreWind(beachName, windDirection) ? 2 : -2;
+    windBase = Math.min(Math.max(windBase, 0), 10);
+    ranks.push(Math.pow(windBase, 1.1) * Math.pow(weights.windSpeed, power) * scaleFactor);
+    totalWeight += Math.pow(weights.windSpeed, power) * scaleFactor;
+  
+    if (totalWeight === 0) return 0;
+    return ranks.reduce((a, b) => a + b, 0) / totalWeight;
   };
-
+  
   useEffect(() => {
     async function fetchBeachData() {
       try {
-        console.log("Starting to fetch beach data...");
         const beaches = [
-          "miami-beach",
-          "daytona-beach",
-          "clearwater-beach",
-          "panama-city-beach",
-          "fort-lauderdale",
-          "west-palm-beach",
-          "jacksonville-beach",
-          "naples-beach",
-          "siesta-key",
-          "key-west",
-          "venice-beach",
-          "new-smyrna-beach"
-        ];        
+          "miami-beach", "daytona-beach", "clearwater-beach", "panama-city-beach",
+          "fort-lauderdale", "west-palm-beach", "jacksonville-beach",
+          "naples-beach", "siesta-key", "key-west", "venice-beach", "new-smyrna-beach"
+        ];
+
         const responses = await Promise.all(
           beaches.map(beach =>
             fetch(`/florida-beaches?beach=${beach}`)
@@ -90,32 +103,38 @@ function App() {
               })
               .catch(err => {
                 console.error(`Fetch error for ${beach}:`, err);
-                return { name: beach.replace(/-/g, " "), temperature: "N/A", waveSize: "N/A", waveFrequency: "N/A", windSpeed: "N/A", rank: 0 };
+                return {
+                  name: beach.replace(/-/g, " "),
+                  temperature: "N/A",
+                  waveSize: "N/A",
+                  waveFrequency: "N/A",
+                  windSpeed: "N/A",
+                  windDirection: "N/A",
+                  rank: 0
+                };
               })
           )
         );
 
-        console.log("Raw responses:", responses);
+        const formattedData = responses.map((item, index) => {
+          const temperature = isNaN(parseFloat(item.temperature)) ? "N/A" : parseFloat(item.temperature);
+          const waveSize = isNaN(parseFloat(item.waveHeight)) ? "N/A" : parseFloat(item.waveHeight);
+          const waveFrequency = isNaN(parseFloat(item.swellPeriod)) ? "N/A" : parseFloat(item.swellPeriod);
+          const windSpeed = isNaN(parseFloat(item.windSpeed)) ? "N/A" : parseFloat(item.windSpeed);
+          const windDirection = isNaN(parseFloat(item.windDirection)) ? "N/A" : parseFloat(item.windDirection);
 
-        const formattedData = responses
-          .map((item, index) => {
-            const temperature = isNaN(parseFloat(item.temperature)) ? "N/A" : parseFloat(item.temperature);
-            const waveSize = isNaN(parseFloat(item.waveHeight)) ? "N/A" : parseFloat(item.waveHeight);
-            const waveFrequency = isNaN(parseFloat(item.swellPeriod)) ? "N/A" : parseFloat(item.swellPeriod);
-            const windSpeed = isNaN(parseFloat(item.windSpeed)) ? "N/A" : parseFloat(item.windSpeed);
-            const rank = calculateRank(temperature, waveSize, waveFrequency, windSpeed);
-            return {
-              name: beaches[index].replace(/-/g, " "),
-              temperature,
-              waveSize,
-              waveFrequency,
-              windSpeed,
-              rank
-            };
-          })
-          .sort((a, b) => b.rank - a.rank); // Sort from best to worst
+          const rank = calculateRank(temperature, waveSize, waveFrequency, windSpeed, windDirection, beaches[index].replace(/-/g, " "));
 
-        console.log("Formatted data with ranks:", formattedData);
+          return {
+            name: beaches[index].replace(/-/g, " "),
+            temperature,
+            waveSize,
+            waveFrequency,
+            windSpeed,
+            windDirection,
+            rank
+          };
+        }).sort((a, b) => b.rank - a.rank);
 
         setBeachData(formattedData);
       } catch (error) {
@@ -127,7 +146,7 @@ function App() {
     }
 
     fetchBeachData();
-  }, [selectedVariables]);
+  }, [selectedVariables, weights]);
 
   const toggleDropdown = (beachName) => {
     setOpenBeach(openBeach === beachName ? null : beachName);
@@ -135,77 +154,41 @@ function App() {
 
   const toggleVariable = (variable) => {
     setSelectedVariables((prev) =>
-      prev.includes(variable) ? prev.filter((item) => item !== variable) : [...prev, variable]
+      prev.includes(variable)
+        ? prev.filter((item) => item !== variable)
+        : [...prev, variable]
     );
+  };
+
+  const sharedProps = {
+    beachData,
+    loading,
+    error,
+    selectedVariables,
+    toggleVariable,
+    weights,
+    setWeights,
+    showOptions,
+    setShowOptions,
+    toggleDropdown,
+    openBeach,
+    isOffshoreWind,
+    beachRoutes
   };
 
   return (
     <Router>
+      <div className="nav-bar" style={{ display: 'flex', justifyContent: 'center', gap: '40px', padding: '1rem', background: '#0072c6' }}>
+        <NavLink to="/" style={({ isActive }) => ({ color: isActive ? 'white' : '#cce6ff', fontWeight: isActive ? 'bold' : 'normal', textDecoration: 'none' })}>
+          All Rankings
+        </NavLink>
+        <NavLink to="/home" style={({ isActive }) => ({ color: isActive ? 'white' : '#cce6ff', fontWeight: isActive ? 'bold' : 'normal', textDecoration: 'none' })}>
+          Home Beaches
+        </NavLink>
+      </div>
       <Routes>
-        <Route path="/" element={
-          <div className="app">
-            <div className="top-bar">
-              <div className="gear-container">
-                <button className="gear-btn" onClick={() => setShowOptions(!showOptions)}>&#x1F50D;</button>
-                {showOptions && (
-                  <div className="options-dropdown below-button">
-                    {["Temperature", "Wave Size", "Windspeed", "Swell Duration"].map((variable, index) => (
-                      <div key={index} className="option-item">
-                        <input
-                          type="checkbox"
-                          checked={selectedVariables.includes(variable.toLowerCase().replace(" ", ""))}
-                          onChange={() => toggleVariable(variable.toLowerCase().replace(" ", ""))}
-                        />
-                        {variable}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="center-container">
-              <h1>ShakaFox</h1>
-              <div className="subtitle">Where is the best place to surf today?</div>
-              <img src="/Wide-Fox.webp" alt="Shaka Fox" className="shaka-image" />
-
-              {loading ? (
-                <p>Loading beach data...</p>
-              ) : error ? (
-                <p>{error}</p>
-              ) : (
-                <div className="beach-list">
-                  {beachData.map((beach, index) => (
-                    <div key={index} className={`beach ${beach.rank === 10 ? 'perfect-beach' : ''}`}>
-                      <button
-                        className={`beach-btn ${beach.rank >= 9 ? 'high-rank' : ''}`}
-                        onClick={() => toggleDropdown(beach.name)}
-                      >
-                        <span className="beach-score">{isNaN(beach.rank) ? "N/A" : beach.rank.toFixed(0)}</span>
-                        <span>{beach.name}</span>
-                        <span className="dropdown-arrow">
-                          {openBeach === beach.name ? '⏶' : '⏷'}
-                        </span>
-                      </button>
-                      {openBeach === beach.name && (
-                        <div className="beach-details">
-                          <p>Temperature: {beach.temperature}°F</p>
-                          <p>Wave Height: {beach.waveSize} m</p>
-                          <p>Swell Period: {beach.waveFrequency} sec</p>
-                          <p>Wind Speed: {beach.windSpeed} m/s</p>
-                          <Link to={beachRoutes[beach.name.toLowerCase()] || "#"} className="more-details-link">
-                            More Details →
-                          </Link>
-
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        } />
+        <Route path="/" element={<HomePage {...sharedProps} page="all" />} />
+        <Route path="/home" element={<HomePage {...sharedProps} page="home" />} />
         <Route path="/miami" element={<Miami />} />
         <Route path="/daytona" element={<Daytona />} />
         <Route path="/clearwater" element={<Clearwater />} />
