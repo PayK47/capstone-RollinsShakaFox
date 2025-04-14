@@ -19,10 +19,17 @@ function App() {
     "miami beach": "/miami",
     "daytona beach": "/daytona",
     "clearwater beach": "/clearwater",
-    "panama city beach": "/panamacity"
+    "panama city beach": "/panamacity",
+    "fort lauderdale": "/fortlauderdale",
+    "west palm beach": "/westpalm",
+    "jacksonville beach": "/jacksonville",
+    "naples beach": "/naples",
+    "siesta key": "/siestakey",
+    "key west": "/keywest",
+    "venice beach": "/venice",
+    "new smyrna beach": "/newsmyrna"
   };
-
-
+  
   const calculateRank = (temperature, waveSize, waveFrequency, windSpeed) => {
     const ranks = [];
     let totalWeight = 0;
@@ -60,7 +67,20 @@ function App() {
     async function fetchBeachData() {
       try {
         console.log("Starting to fetch beach data...");
-        const beaches = ["miami-beach", "daytona-beach", "clearwater-beach", "panama-city-beach"];
+        const beaches = [
+          "miami-beach",
+          "daytona-beach",
+          "clearwater-beach",
+          "panama-city-beach",
+          "fort-lauderdale",
+          "west-palm-beach",
+          "jacksonville-beach",
+          "naples-beach",
+          "siesta-key",
+          "key-west",
+          "venice-beach",
+          "new-smyrna-beach"
+        ];        
         const responses = await Promise.all(
           beaches.map(beach =>
             fetch(`/florida-beaches?beach=${beach}`)
