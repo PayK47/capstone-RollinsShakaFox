@@ -1,4 +1,3 @@
-// Enhanced App.js using HomePage Component
 import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
@@ -7,6 +6,7 @@ import Daytona from './Daytona';
 import Clearwater from './Clearwater';
 import PanamaCity from './PanamaCity';
 import HomePage from './HomePage';
+import foxLogo from './assets/Removal-952.png';
 
 const offshoreDirections = {
   "miami beach": 270,
@@ -178,13 +178,23 @@ function App() {
 
   return (
     <Router>
-      <div className="nav-bar" style={{ display: 'flex', justifyContent: 'center', gap: '40px', padding: '1rem', background: '#0072c6' }}>
-        <NavLink to="/" style={({ isActive }) => ({ color: isActive ? 'white' : '#cce6ff', fontWeight: isActive ? 'bold' : 'normal', textDecoration: 'none' })}>
-          All Rankings
-        </NavLink>
-        <NavLink to="/home" style={({ isActive }) => ({ color: isActive ? 'white' : '#cce6ff', fontWeight: isActive ? 'bold' : 'normal', textDecoration: 'none' })}>
-          Home Beaches
-        </NavLink>
+      <div className="floating-nav">
+        <div className="floating-nav-left">
+          <img
+            src={foxLogo}
+            alt="Fox Logo"
+            className="nav-icon"
+            onClick={() => window.location.href = "/"}
+          />
+          <button className="nav-btn" onClick={() => window.location.href = "/about"}>About</button>
+        </div>
+        <div className="floating-nav-center">
+          <NavLink to="/" className="nav-btn">All Rankings</NavLink>
+          <NavLink to="/home" className="nav-btn">Home Beaches</NavLink>
+        </div>
+        <div className="floating-nav-right">
+          <button className="gear-btn" onClick={() => setShowOptions(!showOptions)}>⚙️</button>
+        </div>
       </div>
       <Routes>
         <Route path="/" element={<HomePage {...sharedProps} page="all" />} />
