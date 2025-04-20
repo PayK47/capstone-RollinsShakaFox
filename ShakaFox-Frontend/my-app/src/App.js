@@ -35,7 +35,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedVariables, setSelectedVariables] = useState(["temperature", "waveSize", "windSpeed", "swellPeriod"]);
-  const [openBeach, setOpenBeach] = useState(null);
+  const [openRowIndex, setOpenRowIndex] = useState(null);
   const [weights, setWeights] = useState({
     temperature: 5,
     waveHeight: 5,
@@ -51,40 +51,39 @@ function App() {
     "panama city beach": "/panamacity"
   };
 
+  const toggleRow = (index) => {
+    setOpenRowIndex(openRowIndex === index ? null : index);
+  };
+
   const calculateRank = (temperature, waveSize, waveFrequency, windSpeed, windDirection, beachName) => {
     const ranks = [];
     let totalWeight = 0;
     const scaleFactor = 2;
     const power = 1.5;
-  
-    // Adjusted temperature scale (65–90°F → 0–10)
+
     const tempRank = Math.min(Math.max((temperature - 65) / 25 * 10, 0), 10);
     ranks.push(Math.pow(tempRank, 1.1) * Math.pow(weights.temperature, power) * scaleFactor);
     totalWeight += Math.pow(weights.temperature, power) * scaleFactor;
-  
-    // Adjusted wave height (ft) from 0.01 to 8 ft → 0–10
-    const waveFeet = waveSize * 3.28084;
-    const waveRank = Math.min(Math.max((waveFeet - 0.01) / 7.99 * 10, 0), 10);
+
+    const waveRank = Math.min(Math.max((waveSize - 0.01) / 7.99 * 10, 0), 10);
     ranks.push(Math.pow(waveRank, 1.1) * Math.pow(weights.waveHeight, power) * scaleFactor);
     totalWeight += Math.pow(weights.waveHeight, power) * scaleFactor;
-  
-    // Adjusted swell period (1–18 sec → 0–10)
+
     const swellRank = Math.min(Math.max((waveFrequency - 1) / 17 * 10, 0), 10);
     ranks.push(Math.pow(swellRank, 1.1) * Math.pow(weights.swellPeriod, power) * scaleFactor);
     totalWeight += Math.pow(weights.swellPeriod, power) * scaleFactor;
-  
-    // Adjusted wind speed (25 mph is now ideal offshore baseline)
+
     const windMph = windSpeed * 2.23694;
     let windBase = Math.min(Math.max((25 - windMph) / 25 * 10, 0), 10);
     windBase += isOffshoreWind(beachName, windDirection) ? 2 : -2;
     windBase = Math.min(Math.max(windBase, 0), 10);
     ranks.push(Math.pow(windBase, 1.1) * Math.pow(weights.windSpeed, power) * scaleFactor);
     totalWeight += Math.pow(weights.windSpeed, power) * scaleFactor;
-  
+
     if (totalWeight === 0) return 0;
     return ranks.reduce((a, b) => a + b, 0) / totalWeight;
   };
-  
+
   useEffect(() => {
     async function fetchBeachData() {
       try {
@@ -148,10 +147,6 @@ function App() {
     fetchBeachData();
   }, [selectedVariables, weights]);
 
-  const toggleDropdown = (beachName) => {
-    setOpenBeach(openBeach === beachName ? null : beachName);
-  };
-
   const toggleVariable = (variable) => {
     setSelectedVariables((prev) =>
       prev.includes(variable)
@@ -170,8 +165,8 @@ function App() {
     setWeights,
     showOptions,
     setShowOptions,
-    toggleDropdown,
-    openBeach,
+    toggleRow,
+    openRowIndex,
     isOffshoreWind,
     beachRoutes
   };

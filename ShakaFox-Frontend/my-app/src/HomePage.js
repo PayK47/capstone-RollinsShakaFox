@@ -11,8 +11,8 @@ function HomePage({
   setWeights,
   showOptions,
   setShowOptions,
-  toggleDropdown,
-  openBeach,
+  toggleRow,
+  openRowIndex,
   isOffshoreWind,
   beachRoutes,
   page = "all"
@@ -25,6 +25,11 @@ function HomePage({
         "jacksonville beach"
       ].includes(b.name.toLowerCase()))
     : beachData;
+
+  const beachRows = [];
+  for (let i = 0; i < filteredBeaches.length; i += 3) {
+    beachRows.push(filteredBeaches.slice(i, i + 3));
+  }
 
   return (
     <div className="app">
@@ -71,29 +76,33 @@ function HomePage({
           <p>{error}</p>
         ) : (
           <div className="beach-list">
-            {filteredBeaches.map((beach, index) => (
-              <div key={index} className={`beach ${beach.rank === 10 ? 'perfect-beach' : ''}`}>
-                <button className={`beach-btn ${beach.rank >= 9 ? 'high-rank' : ''}`} onClick={() => toggleDropdown(beach.name)}>
-                  <span className="beach-score">{isNaN(beach.rank) ? "N/A" : beach.rank.toFixed(0)}</span>
-                  <span>{beach.name}</span>
-                  <span className="dropdown-arrow">{openBeach === beach.name ? '⏶' : '⏷'}</span>
-                </button>
-                {openBeach === beach.name && (
-                  <div className="beach-details">
-                    <p>Temperature: {beach.temperature}°F</p>
-                    <p>Wave Height: {(beach.waveSize * 3.28084).toFixed(1)} ft</p>
-                    <p>Swell Period: {beach.waveFrequency} sec</p>
-                    <p>Wind Speed: {(beach.windSpeed * 2.23694).toFixed(1)} mph</p>
-                    {beach.windDirection !== undefined && beach.windDirection !== "N/A" && (
-                      <p style={{ color: isOffshoreWind(beach.name, beach.windDirection) ? "red" : "green" }}>
-                        Wind Direction: {isOffshoreWind(beach.name, beach.windDirection) ? "Offshore" : "Onshore"}
-                      </p>
+            {beachRows.map((row, rowIndex) => (
+              <div className="beach-row" key={rowIndex} style={{ display: 'flex', gap: '20px', width: '100%' }}>
+                {row.map((beach, index) => (
+                  <div key={index} className={`beach ${beach.rank === 10 ? 'perfect-beach' : ''}`}>
+                    <button className={`beach-btn ${beach.rank >= 9 ? 'high-rank' : ''}`} onClick={() => toggleRow(rowIndex)}>
+                      <span className="beach-score">{isNaN(beach.rank) ? "N/A" : beach.rank.toFixed(1)}</span>
+                      <span>{beach.name}</span>
+                      <span className="dropdown-arrow">{openRowIndex === rowIndex ? '⏶' : '⏷'}</span>
+                    </button>
+                    {openRowIndex === rowIndex && (
+                      <div className="beach-details">
+                        <p>🌡️ Temperature: {beach.temperature}°F</p>
+                        <p>🌊 Wave Height: <span style={{ fontSize: `${Math.min(beach.waveSize * 6, 36)}px` }}>🌊</span> {beach.waveSize.toFixed(1)} ft</p>
+                        <p>🌊 Swell Period: {beach.waveFrequency} sec</p>
+                        <p>💨 Wind Speed: {(beach.windSpeed * 2.23694).toFixed(1)} mph</p>
+                        {beach.windDirection !== undefined && beach.windDirection !== "N/A" && (
+                          <p style={{ color: isOffshoreWind(beach.name, beach.windDirection) ? "green" : "red" }}>
+                            Wind Direction: {isOffshoreWind(beach.name, beach.windDirection) ? "Offshore" : "Onshore"}
+                          </p>
+                        )}
+                        <Link to={beachRoutes[beach.name.toLowerCase()] || "#"} className="more-details-link">
+                          More Details →
+                        </Link>
+                      </div>
                     )}
-                    <Link to={beachRoutes[beach.name.toLowerCase()] || "#"} className="more-details-link">
-                      More Details →
-                    </Link>
                   </div>
-                )}
+                ))}
               </div>
             ))}
           </div>
