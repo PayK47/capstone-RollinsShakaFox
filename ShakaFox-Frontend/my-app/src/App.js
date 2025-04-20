@@ -7,6 +7,19 @@ import Miami from './Miami';
 import Daytona from './Daytona';
 import Clearwater from './Clearwater';
 import PanamaCity from './PanamaCity';
+import Cocoa from './Cocoa';
+import Naples from './Naples';
+import Jacksonville from './Jacksonville';
+import NewSmyrna from './NewSmyrna';
+import PlayaLinda from './PlayaLinda';
+import Sebastian from './Sebastian';
+import StAugustine from './StAugustine';
+import FortPierce from './FortPierce';
+import Venice from './Venice';
+import KeyWest from './KeyWest';
+import FortLauderdale from './FortLauderdale';
+import WestPalm from './WestPalm';
+import Siesta from './Siesta';
 import HomePage from './HomePage';
 import About from './About';
 import foxLogo from './assets/Removal-952.png';
@@ -56,9 +69,22 @@ function App() {
     "miami beach": "/miami",
     "daytona beach": "/daytona",
     "clearwater beach": "/clearwater",
-    "panama city beach": "/panamacity"
-    // New beach pages can be added here if needed
+    "panama city beach": "/panamacity",
+    "new smyrna beach": "/newsmyrna",
+    "jacksonville beach": "/jacksonville",
+    "cocoa beach": "/cocoa",
+    "playa linda": "/playalinda",
+    "sebastian inlet": "/sebastian",
+    "st augustine": "/staugustine",
+    "fort pierce inlet": "/fortpierce",
+    "naples beach": "/naples",
+    "venice beach": "/venice",
+    "key west": "/keywest",
+    "fort lauderdale": "/fortlauderdale",
+    "west palm beach": "/westpalm",
+    "siesta key": "/siesta"
   };
+  
 
   const toggleRow = (index) => {
     setOpenRowIndex(openRowIndex === index ? null : index);
@@ -205,10 +231,20 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage {...sharedProps} page="all" />} />
         <Route path="/home" element={<HomePage {...sharedProps} page="home" />} />
-        <Route path="/miami" element={<Miami />} />
-        <Route path="/daytona" element={<Daytona />} />
         <Route path="/clearwater" element={<Clearwater />} />
-        <Route path="/panamacity" element={<PanamaCity />} />
+        <Route path="/cocoa" element={<Cocoa />} />
+        <Route path="/naples" element={<Naples />} />
+        <Route path="/jacksonville" element={<Jacksonville />} />
+        <Route path="/newsmyrna" element={<NewSmyrna />} />
+        <Route path="/playalinda" element={<PlayaLinda />} />
+        <Route path="/sebastian" element={<Sebastian />} />
+        <Route path="/staugustine" element={<StAugustine />} />
+        <Route path="/fortpierce" element={<FortPierce />} />
+        <Route path="/venice" element={<Venice />} />
+        <Route path="/keywest" element={<KeyWest />} />
+        <Route path="/fortlauderdale" element={<FortLauderdale />} />
+        <Route path="/westpalm" element={<WestPalm />} />
+        <Route path="/siesta" element={<Siesta />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </Router>
