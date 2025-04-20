@@ -6,6 +6,7 @@ import Daytona from './Daytona';
 import Clearwater from './Clearwater';
 import PanamaCity from './PanamaCity';
 import HomePage from './HomePage';
+import About from './About';
 import foxLogo from './assets/Removal-952.png';
 
 const offshoreDirections = {
@@ -198,6 +199,7 @@ function App() {
         <Route path="/daytona" element={<Daytona />} />
         <Route path="/clearwater" element={<Clearwater />} />
         <Route path="/panamacity" element={<PanamaCity />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );
