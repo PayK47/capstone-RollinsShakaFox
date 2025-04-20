@@ -1,3 +1,5 @@
+// --- UPDATED App.js ---
+
 import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
@@ -21,7 +23,12 @@ const offshoreDirections = {
   "siesta key": 90,
   "key west": 90,
   "venice beach": 90,
-  "new smyrna beach": 270
+  "new smyrna beach": 270,
+  "cocoa beach": 270,
+  "playa linda": 270,
+  "sebastian inlet": 270,
+  "st augustine": 270,
+  "fort pierce inlet": 270,
 };
 
 function isOffshoreWind(beachName, windDir) {
@@ -50,6 +57,7 @@ function App() {
     "daytona beach": "/daytona",
     "clearwater beach": "/clearwater",
     "panama city beach": "/panamacity"
+    // New beach pages can be added here if needed
   };
 
   const toggleRow = (index) => {
@@ -89,9 +97,11 @@ function App() {
     async function fetchBeachData() {
       try {
         const beaches = [
-          "miami-beach", "daytona-beach", "clearwater-beach", "panama-city-beach",
-          "fort-lauderdale", "west-palm-beach", "jacksonville-beach",
-          "naples-beach", "siesta-key", "key-west", "venice-beach", "new-smyrna-beach"
+          "Miami-Beach", "Daytona-Beach", "Clearwater-Beach", "Panama-City-Beach",
+          "Fort-Lauderdale", "Jacksonville-Beach",
+          "Naples-Beach", "Siesta-Key", "Key-West", "Venice-Beach", "New-Smyrna-Beach",
+          "Cocoa-Beach", "Playa-Linda", "Sebastian-Inlet", "St-Augustine",
+          "Fort-Pierce-Inlet"
         ];
 
         const responses = await Promise.all(

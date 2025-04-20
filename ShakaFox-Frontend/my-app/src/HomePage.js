@@ -20,8 +20,9 @@ function HomePage({
   const filteredBeaches = page === "home"
     ? beachData.filter(b => [
         "new smyrna beach",
-        "clearwater beach",
-        "daytona beach",
+        "cocoa beach",
+        "playa linda",
+        "sebastian inlet",
         "jacksonville beach"
       ].includes(b.name.toLowerCase()))
     : beachData;
@@ -76,9 +77,16 @@ function HomePage({
           )}
         </div>
 
-        <div className="center-container">
+        <div
+          className="center-container"
+          style={page === "home" ? { marginTop: '30px' } : {}}
+        >
           <h1>ShakaFox</h1>
-          <div className="subtitle">Where is the best place to surf today?</div>
+          <div className="subtitle">
+            {page === "home"
+              ? "Rollins College surf ranked for you instantly!"
+              : "Florida surfing ranked for you instantly!"}
+          </div>
           <img src="/Wide-Fox.webp" alt="Shaka Fox" className="shaka-image" />
 
           {loading ? (
