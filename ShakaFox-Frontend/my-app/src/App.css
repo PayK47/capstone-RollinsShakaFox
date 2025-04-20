@@ -1,30 +1,30 @@
-/* === Global Styles for Entire Page === */
+/* === Global Styles === */
 body, html {
-  margin: 0;                  /* Removes default margin */
-  padding: 0;                 /* Removes default padding */
-  width: 100%;                /* Full width */
-  height: 100%;               /* Full height */
-  box-sizing: border-box;     /* Includes padding and border in element size */
-  overflow: auto;             /* Enables scrolling if content overflows */
-  overflow-x: hidden;         /* Prevents horizontal overflow */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #e3f6fa;
 }
 
 /* === Floating Navigation Menu === */
 .floating-nav {
   position: sticky;
   top: 0;
-  z-index: 1001;
+  z-index: 1000;
   background-color: #0072BC;
-  width: 90%;
-  max-width: 1100px;
-  margin: 12px auto;
   padding: 12px 24px;
+  margin: 12px auto;
+  width: 100%;
+  max-width: 1200px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .floating-nav-left,
@@ -35,275 +35,178 @@ body, html {
   gap: 20px;
 }
 
-.floating-nav-right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: auto;
-}
-
 .nav-icon {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  cursor: pointer;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .nav-btn {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: white;
   background: none;
   border: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
   cursor: pointer;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: 0.3s;
 }
 
 .nav-btn:hover {
-  transform: scale(1.1);
   color: #f1c40f;
 }
 
-/* === Main App Container === */
-.App {
-  display: flex;              /* Use flexbox for layout */
-  justify-content: center;   /* Center items horizontally */
-  align-items: flex-start;   /* Align items at the top vertically */
-  flex-direction: column;    /* Stack children vertically */
-  width: 100vw;              /* Full viewport width */
-  margin: 0;
-  background-color: #e3f6fa; /* Light blue background */
-}
-
-/* === Heading Style === */
-h1 {
-  color: black;
-  font-size: 4rem;           /* Big text */
-  font-weight: bold;
-  text-align: center;
-  word-wrap: break-word;     /* Prevents overflow on long words */
-  margin-top: 10px;          /* Adds space above the heading */
-}
-
-/* === Subtitle Style === */
-.subtitle {
-  font-size: 1.5rem;
-  text-align: center;
-  color: #333;
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-
-/* === Settings Gear Button === */
+/* === Gear Button === */
 .gear-btn {
-  font-size: 45px;
+  font-size: 30px;
   background: none;
   border: none;
   color: white;
   cursor: pointer;
-  z-index: 300;
-  position: relative;
-  transition: transform 0.5s ease; /* Smooth rotation */
+  transition: transform 0.5s ease;
 }
 
-/* === Gear Hover Effects === */
 .gear-btn:hover {
-  color: #f1c40f;             /* Changes color to gold */
-  transform: rotate(180deg); /* Rotates the icon */
+  color: #f1c40f;
+  transform: rotate(180deg);
 }
 
-/* === Dropdown Menu for Options Below the Gear === */
-.options-dropdown.below-button {
-  position: absolute;
-  top: 55px;
-  right: 0;
-  background-color: white;
-  border: 2px solid #0153a4;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  width: 200px;
-  z-index: 1102;
-}
-
-.dropdown-arrow {
-  margin-left: auto; /* pushes it to the far right */
-  font-size: 18px;
-}
-
-/* === Each Option in the Dropdown Menu === */
-.option-item {
+/* === App Container === */
+.app {
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  gap: 10px;           /* Space between icon and label */
-  padding: 5px 0;
+  flex-direction: column;
 }
 
-/* === Centered Content Container === */
 .center-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding-top: 20px;           /* Offset from top bar */
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  width: 100%;
   box-sizing: border-box;
-  height: auto;
 }
 
-/* === Main Shaka Image === */
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
 .shaka-image {
   width: 300px;
-  max-width: 100%;             /* Responsive for smaller screens */
+  max-width: 100%;
   border-radius: 10px;
   margin-top: 20px;
 }
 
-/* === List of Ranked Beaches === */
+/* === Beach List Grid === */
 .beach-list {
-  margin-top: 20px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 2rem;
 }
 
-/* === Individual Beach Container === */
 .beach {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 10px;
+  transition: transform 0.2s ease;
+}
+
+.beach:hover {
+  transform: translateY(-3px);
+}
+
+.beach-btn {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
 }
 
-/* === Special Highlight for #1 Beach === */
+.beach-score {
+  background-color: #0153a4;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-right: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+}
+
 .perfect-beach {
-  border: 3px solid #f39c12;  /* Orange border */
-  box-shadow: 0 0 15px #f39c12; /* Glowing effect */
+  border: 3px solid #f39c12;
+  box-shadow: 0 0 15px #f39c12;
   position: relative;
 }
 
-/* === Surfer Emoji Tag on Perfect Beach === */
 .perfect-beach::before {
-  content: "🏄";
+  content: "\1F3C4"; /* 🏄 surfer emoji */
   position: absolute;
   top: -12px;
   right: -12px;
   font-size: 28px;
-  background-color: #4CAF50; /* Green circle */
+  background-color: #4CAF50;
   border-radius: 50%;
   padding: 8px;
   color: white;
 }
 
-/* === Dropdown Animation for More Info === */
-.bars-dropdown {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+/* === Slider Panel === */
+.slider-container label {
+  font-weight: bold;
 }
 
-/* === When Dropdown is Opened === */
-.bars-dropdown.open {
-  max-height: 200px;
-  padding: 10px;
-  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+.slider-container input[type=range] {
+  width: 100%;
 }
 
-/* === Each Row in Dropdown Menu === */
-.bar-item {
-  padding: 10px;
-  font-size: 16px;
+/* === Details Section === */
+.beach-details p {
+  margin: 6px 0;
   color: #333;
+}
+
+.more-details-link {
+  font-weight: bold;
+  color: #0072BC;
   text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s;
+  display: inline-block;
+  margin-top: 8px;
 }
 
-/* === Hover Effect for Dropdown Items === */
-.bar-item:hover {
-  background-color: #f1f1f1;
+.more-details-link:hover {
+  text-decoration: underline;
 }
 
-/* === Button for Each Beach === */
-.beach-btn {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: #0072BC; /* Bright blue */
-  color: white;
-  gap: 12px;
-  padding: 12px 20px;
+.dropdown-arrow {
   font-size: 18px;
-  font-weight: bold;
-  border: none;
-  width: 100%;
-  text-align: left;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
 }
 
-/* === Green Highlight for Top-Ranked Beaches === */
 .high-rank {
-  background-color: #4CAF50; /* Green */
-  color: #fff;
+  background-color: #4CAF50;
+  color: white;
   border: 2px solid #45a049;
-}
-
-/* === Hover Effect for Beach Button === */
-.beach-btn:hover {
-  background-color: #00A8E8;
-}
-
-/* === Ranking Text Next to Beach Buttons === */
-.beach-rank {
-  font-size: 18px;
-  color: #555;
-  margin-left: 10px;
-  font-weight: bold;
-}
-
-/* === Beach Score Badge === */
-.beach-score {
-  background-color: #0153a4;
-  border-radius: 6px;
-  padding: 6px 12px;
-  margin-right: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-}
-
-/* === Flashing Banner Message === */
-.flashy-message {
-  background-color: #f39c12;     /* Orange */
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 10px;
-  text-align: center;
-  animation: flashAnimation 1.5s infinite alternate;
-  width: 100%;
-  z-index: 200;
-  box-sizing: border-box;
-}
-
-/* === Flash Animation Keyframes === */
-@keyframes flashAnimation {
-  0% {
-    background-color: #f39c12;
-    transform: scale(1);
-  }
-  100% {
-    background-color: #e74c3c;  /* Red */
-    transform: scale(1.05);     /* Grows slightly */
-  }
-}
-
-h1:hover, .subtitle:hover, .bar-item:hover, .option-item:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
 }
