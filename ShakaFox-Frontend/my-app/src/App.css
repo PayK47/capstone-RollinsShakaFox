@@ -34,22 +34,43 @@ body, html {
   z-index: 1000;
   background-color: #0072BC;
   padding: 12px 24px;
-  margin: 12px auto;
-  width: 100%;
-  max-width: 1200px;
+  margin: 0 auto;
+  max-width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  width: calc(100% - 24px); /* Adds margin from edges */
+  box-sizing: border-box;
 }
 
-.floating-nav-left,
-.floating-nav-center,
+.floating-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.floating-nav-center {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
 .floating-nav-right {
   display: flex;
   align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.nav-links-desktop {
+  display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 .nav-icon {
@@ -237,5 +258,101 @@ h1 {
   color: white;
   border: 2px solid #45a049;
 }
+/* === Dark Mode Support === */
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.dark-mode .floating-nav {
+  background-color: #1f1f1f;
+}
+
+.dark-mode .nav-btn,
+.dark-mode .gear-btn {
+  color: #f0f0f0;
+}
+
+.dark-mode .nav-btn:hover,
+.dark-mode .gear-btn:hover {
+  color: #f1c40f;
+}
+
+.dark-mode .beach {
+  background-color: #2a2a2a;
+  color: white;
+}
+
+.dark-mode .beach-score {
+  background-color: #333;
+  color: #f0f0f0;
+}
+
+.dark-mode .perfect-beach::before {
+  background-color: #388e3c;
+}
+
+.dark-mode .more-details-link {
+  color: #90caf9;
+}
+
+.dark-mode .more-details-link:hover {
+  text-decoration: underline;
+}
+
+.dark-mode .mobile-dropdown {
+  background-color: #1f1f1f;
+}
 
 
+/* === Responsive Navigation === */
+.nav-links-desktop {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+}
+
+.mobile-dropdown {
+  display: flex;
+  flex-direction: column;
+  background-color: #0072BC;
+  border-radius: 12px;
+  padding: 16px;
+  position: absolute;
+  top: 70px;
+  left: 12px;
+  right: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+.mobile-dropdown a {
+  color: white;
+  padding: 10px 0;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.mobile-dropdown a:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links-desktop {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: block;
+  }
+}

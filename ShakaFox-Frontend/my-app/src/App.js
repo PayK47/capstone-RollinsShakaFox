@@ -51,6 +51,8 @@ function App() {
     windSpeed: 5
   });
   const [showOptions, setShowOptions] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const beachRoutes = {
     "miami beach": "/miami",
@@ -59,6 +61,14 @@ function App() {
     "panama city beach": "/panamacity"
     // New beach pages can be added here if needed
   };
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
 
   const toggleRow = (index) => {
     setOpenRowIndex(openRowIndex === index ? null : index);
@@ -192,15 +202,33 @@ function App() {
             className="nav-icon"
             onClick={() => window.location.href = "/"}
           />
-          <button className="nav-btn" onClick={() => window.location.href = "/about"}>About</button>
+          <div className="nav-links-desktop">
+            <button className="nav-btn" onClick={() => window.location.href = "/about"}>About</button>
+          </div>
+          <button className="hamburger-btn" onClick={() => setShowMobileMenu(!showMobileMenu)}>☰</button>
         </div>
+
         <div className="floating-nav-center">
-          <NavLink to="/" className="nav-btn">All Rankings</NavLink>
-          <NavLink to="/home" className="nav-btn">Home Beaches</NavLink>
+          <div className="nav-links-desktop">
+            <NavLink to="/" className="nav-btn">All Rankings</NavLink>
+            <NavLink to="/home" className="nav-btn">Home Beaches</NavLink>
+          </div>
         </div>
+
         <div className="floating-nav-right">
+          <button className="gear-btn" onClick={() => setDarkMode(!darkMode)}>
+            {darkMode ? '☀️' : '🌙'}
+          </button>
           <button className="gear-btn" onClick={() => setShowOptions(!showOptions)}>⚙️</button>
         </div>
+
+        {showMobileMenu && (
+          <div className="mobile-dropdown">
+            <NavLink to="/about" className="nav-btn" onClick={() => setShowMobileMenu(false)}>About</NavLink>
+            <NavLink to="/" className="nav-btn" onClick={() => setShowMobileMenu(false)}>All Rankings</NavLink>
+            <NavLink to="/home" className="nav-btn" onClick={() => setShowMobileMenu(false)}>Home Beaches</NavLink>
+          </div>
+        )}
       </div>
       <Routes>
         <Route path="/" element={<HomePage {...sharedProps} page="all" />} />
