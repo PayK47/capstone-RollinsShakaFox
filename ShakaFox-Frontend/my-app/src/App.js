@@ -70,19 +70,20 @@ function App() {
     "daytona beach": "/daytona",
     "clearwater beach": "/clearwater",
     "panama city beach": "/panamacity",
-    "new smyrna beach": "/newsmyrna",
+    "fort lauderdale": "/fortlauderdale",
+    "west palm beach": "/westpalm",
     "jacksonville beach": "/jacksonville",
+    "naples beach": "/naples",
+    "siesta key": "/siesta",
+    "key west": "/keywest",
+    "venice beach": "/venice",
+    "new smyrna beach": "/newsmyrna",
     "cocoa beach": "/cocoa",
     "playa linda": "/playalinda",
     "sebastian inlet": "/sebastian",
     "st augustine": "/staugustine",
-    "fort pierce inlet": "/fortpierce",
-    "naples beach": "/naples",
-    "venice beach": "/venice",
-    "key west": "/keywest",
-    "fort lauderdale": "/fortlauderdale",
-    "west palm beach": "/westpalm",
-    "siesta key": "/siesta"
+    "fort pierce inlet": "/fortpierce"
+
   };
   
 
@@ -232,6 +233,9 @@ function App() {
         <Route path="/" element={<HomePage {...sharedProps} page="all" />} />
         <Route path="/home" element={<HomePage {...sharedProps} page="home" />} />
         <Route path="/clearwater" element={<Clearwater />} />
+        <Route path="/miami" element={<Miami />} />
+        <Route path="/daytona" element={<Daytona />} />
+        <Route path="/panamacity" element={<PanamaCity />} />
         <Route path="/cocoa" element={<Cocoa />} />
         <Route path="/naples" element={<Naples />} />
         <Route path="/jacksonville" element={<Jacksonville />} />

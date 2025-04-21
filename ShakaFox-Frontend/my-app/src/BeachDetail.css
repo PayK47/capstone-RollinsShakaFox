@@ -105,4 +105,292 @@
     border-radius: 10px;
     margin-top: 2rem;
   }
+
+.wave-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.wave {
+  width: 100px; /* Fixed width for the wave */
+  background: linear-gradient(to top, #00bcd4, #87ceeb); /* Wave gradient */
+  border-radius: 50%; /* Make the wave rounded */
+  animation: wave-animation 2s infinite ease-in-out; /* Smooth wave animation */
+  transition: height 0.3s ease; /* Smooth transition for height changes */
+}
+
+@keyframes wave-animation {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px); /* Wave rises slightly */
+  }
+}
+
+.wave-history {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.wave-history-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.wave-history-item {
+  background-color: #00bcd4;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  width: 50px;
+}
+
+.history-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.history-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #00bcd4;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  width: 60px;
+}
+
+.sun-icon {
+  margin-bottom: 5px;
+  transition: filter 0.3s ease; /* Smooth transition for brightness changes */
+}
+
+.current-label {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #ff5722; /* Bright orange for visibility */
+  font-weight: bold;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 20px; /* Space between grid items */
+  margin-top: 20px;
+}
+
+.grid-item {
+  background-color: #f0f8ff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.temperature-section {
+  background-color: #fff8e1; /* Light yellow for temperature */
+}
+
+.wave-section {
+  background-color: #e1f5fe; /* Light blue for wave height */
+}
+
+.swell-section {
+  background-color: #e8f5e9; /* Light green for swell period */
+}
+
+.wind-section {
+  background-color: #fce4ec; /* Light pink for wind speed */
+}
+
+.wave-icon {
+  margin: 10px 0;
+  transition: font-size 0.3s ease; /* Smooth transition for size changes */
+}
+
+.wind-icon {
+  margin: 10px 0;
+  transition: font-size 0.3s ease; /* Smooth transition for size changes */
+}
+
+.beach-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: sans-serif;
+  }
   
+  .beach-detail-title {
+    font-size: 2.5rem;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .beach-graph-wrapper {
+    padding: 1rem;
+  }
+  
+  .temperature-display {
+    margin-bottom: 2rem;
+  }
+  
+  .temp-label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .temp-bar {
+    background: #eee;
+    height: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .temp-fill {
+    background: linear-gradient(90deg, #2196F3, #f44336);
+    height: 100%;
+    color: white;
+    text-align: right;
+    padding-right: 10px;
+    line-height: 30px;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+  
+  .rank-display {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  .beach-image {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 2rem;
+  }
+
+.top-section {
+  display: flex;
+  gap: 20px; /* Space between the main photo and the carousel */
+  margin-bottom: 20px;
+}
+
+.main-photo {
+  flex: 1; /* Main photo takes up equal space as the carousel */
+  position: relative; /* Position the link relative to the photo */
+}
+
+.main-photo img {
+  display: block; /* Ensure the image is always visible */
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.main-photo a {
+  position: relative; /* Ensure the link covers the image */
+  display: block;
+  text-decoration: none; /* Remove underline from the link */
+}
+
+.main-photo .hover-message {
+  display: none; /* Hide the message by default */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the message */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  color: white; /* Text color */
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  text-align: center;
+  z-index: 10; /* Ensure the message is above the image */
+}
+
+.main-photo a:hover .hover-message {
+  display: block; /* Show the message when hovering over the link */
+}
+
+.main-photo-image {
+  width: 100%;
+  height: 300px; /* Set a fixed height for consistency */
+  object-fit: cover; /* Crop the image to fit the container */
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.photo-carousel {
+  flex: 1; /* Carousel takes up equal space as the main photo */
+  position: relative;
+  text-align: center;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 300px; /* Match the height of the main photo */
+  object-fit: cover; /* Crop the image to fit the container */
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.photo-carousel:hover .carousel-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carousel-controls button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  pointer-events: auto;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.carousel-controls button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+}
+
+.carousel-controls button:focus {
+  outline: none;
+}
+
+.beach-data {
+  background-color: #f0f8ff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
