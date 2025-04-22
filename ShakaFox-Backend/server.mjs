@@ -30,7 +30,7 @@ const floridaBeaches = {
   "new-smyrna-beach": { lat: 29.0258, lon: -80.9270 },
   "cocoa-beach": { lat: 28.3200, lon: -80.6076 },
   "playa-linda": { lat: 28.6555, lon: -80.6397 },
-  "sebastian-inlet": { lat: 27.8600, lon: -80.4478 },
+  "sebastian-inlet": { lat: 28.0684, lon: -80.5603 },
   "st-augustine": { lat: 29.9012, lon: -81.3124 },
   "fort-pierce-inlet": { lat: 27.4686, lon: -80.2960 },
 };
@@ -69,21 +69,40 @@ async function fetchBuoyData(stationId) {
 
 async function fetchAirTemperature(lat, lon) {
   try {
-    const url = `https://api.weather.gov/points/${lat},${lon}`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`NWS Point API failed: ${response.status}`);
-    const data = await response.json();
-    const forecastUrl = data.properties.forecast;
-    const forecastResponse = await fetch(forecastUrl);
-    if (!forecastResponse.ok) throw new Error(`NWS Forecast API failed: ${forecastResponse.status}`);
-    const forecastData = await forecastResponse.json();
-    const temperature = forecastData.properties.periods[0].temperature;
-    return temperature;
+    const pointsUrl = `https://api.weather.gov/points/${lat},${lon}`;
+    const pointsRes = await fetch(pointsUrl);
+    if (!pointsRes.ok) throw new Error(`NWS Point API failed: ${pointsRes.status}`);
+    const pointsData = await pointsRes.json();
+
+    const stationsUrl = pointsData.properties.observationStations;
+    if (!stationsUrl) throw new Error(`No observation stations URL found for (${lat}, ${lon})`);
+
+    const stationsRes = await fetch(stationsUrl);
+    if (!stationsRes.ok) throw new Error(`NWS Stations API failed: ${stationsRes.status}`);
+    const stationsData = await stationsRes.json();
+
+    const stationId = stationsData.features[0]?.properties.stationIdentifier;
+    if (!stationId) throw new Error(`No valid station found near (${lat}, ${lon})`);
+
+    const latestObsUrl = `https://api.weather.gov/stations/${stationId}/observations/latest`;
+    const obsRes = await fetch(latestObsUrl);
+    if (!obsRes.ok) throw new Error(`Latest observation fetch failed: ${obsRes.status}`);
+    const obsData = await obsRes.json();
+
+    const tempCelsius = obsData.properties.temperature.value;
+    if (tempCelsius === null) throw new Error(`Temperature value is null at station ${stationId}`);
+
+    const tempFahrenheit = (tempCelsius * 9/5) + 32;
+    return Math.round(tempFahrenheit);
   } catch (error) {
     console.error(`Error fetching air temperature: ${error.message}`);
     return "N/A";
   }
 }
+
+
+
+
 
 function parseBuoyData(rawData) {
   const lines = rawData.split("\n").filter(line => line.trim());
