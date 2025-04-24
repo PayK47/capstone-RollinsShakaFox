@@ -1,27 +1,9 @@
-// --- UPDATED App.js ---
-
 import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
-import Miami from './Miami';
-import Daytona from './Daytona';
-import Clearwater from './Clearwater';
-import PanamaCity from './PanamaCity';
-import Cocoa from './Cocoa';
-import Naples from './Naples';
-import Jacksonville from './Jacksonville';
-import NewSmyrna from './NewSmyrna';
-import PlayaLinda from './PlayaLinda';
-import Sebastian from './Sebastian';
-import StAugustine from './StAugustine';
-import FortPierce from './FortPierce';
-import Venice from './Venice';
-import KeyWest from './KeyWest';
-import FortLauderdale from './FortLauderdale';
-import WestPalm from './WestPalm';
-import Siesta from './Siesta';
 import HomePage from './HomePage';
 import About from './About';
+import BeachDetail from './BeachDetail'; // Generic beach detail page
 import foxLogo from './assets/Removal-952.png';
 
 const offshoreDirections = {
@@ -67,36 +49,6 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const beachRoutes = {
-    "miami beach": "/miami",
-    "daytona beach": "/daytona",
-    "clearwater beach": "/clearwater",
-    "panama city beach": "/panamacity",
-    "fort lauderdale": "/fortlauderdale",
-    "west palm beach": "/westpalm",
-    "jacksonville beach": "/jacksonville",
-    "naples beach": "/naples",
-    "siesta key": "/siesta",
-    "key west": "/keywest",
-    "venice beach": "/venice",
-    "new smyrna beach": "/newsmyrna",
-    "cocoa beach": "/cocoa",
-    "playa linda": "/playalinda",
-    "sebastian inlet": "/sebastian",
-    "st augustine": "/staugustine",
-    "fort pierce inlet": "/fortpierce"
-
-  };
-  
-
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  }, [darkMode]);
-
   const toggleRow = (index) => {
     setOpenRowIndex(openRowIndex === index ? null : index);
   };
@@ -131,14 +83,21 @@ function App() {
   };
 
   useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
+
+  useEffect(() => {
     async function fetchBeachData() {
       try {
         const beaches = [
           "Miami-Beach", "Daytona-Beach", "Clearwater-Beach", "Panama-City-Beach",
-          "Fort-Lauderdale", "Jacksonville-Beach",
-          "Naples-Beach", "Siesta-Key", "Key-West", "Venice-Beach", "New-Smyrna-Beach",
-          "Cocoa-Beach", "Playa-Linda", "Sebastian-Inlet", "St-Augustine",
-          "Fort-Pierce-Inlet"
+          "Fort-Lauderdale", "Jacksonville-Beach", "Naples-Beach", "Siesta-Key", "Key-West",
+          "Venice-Beach", "New-Smyrna-Beach", "Cocoa-Beach", "Playa-Linda", "Sebastian-Inlet",
+          "St-Augustine", "Fort-Pierce-Inlet"
         ];
 
         const responses = await Promise.all(
@@ -203,6 +162,26 @@ function App() {
     );
   };
 
+  const beachRoutes = {
+    "key west": "/key-west",
+    "miami beach": "/miami-beach",
+    "clearwater beach": "/clearwater-beach",
+    "daytona beach": "/daytona-beach",
+    "panama city beach": "/panama-city-beach",
+    "fort lauderdale": "/fort-lauderdale",
+    "jacksonville beach": "/jacksonville-beach",
+    "naples beach": "/naples-beach",
+    "siesta key": "/siesta-key",
+    "venice beach": "/venice-beach",
+    "new smyrna beach": "/new-smyrna-beach",
+    "cocoa beach": "/cocoa-beach",
+    "playa linda": "/playa-linda",
+    "sebastian inlet": "/sebastian-inlet",
+    "st augustine": "/st-augustine",
+    "fort pierce inlet": "/fort-pierce-inlet"
+  };
+  
+
   const sharedProps = {
     beachData,
     loading,
@@ -257,27 +236,13 @@ function App() {
           </div>
         )}
       </div>
+
       <Routes>
         <Route path="/" element={<HomePage {...sharedProps} page="all" />} />
         <Route path="/home" element={<HomePage {...sharedProps} page="home" />} />
-        <Route path="/clearwater" element={<Clearwater />} />
-        <Route path="/miami" element={<Miami />} />
-        <Route path="/daytona" element={<Daytona />} />
-        <Route path="/panamacity" element={<PanamaCity />} />
-        <Route path="/cocoa" element={<Cocoa />} />
-        <Route path="/naples" element={<Naples />} />
-        <Route path="/jacksonville" element={<Jacksonville />} />
-        <Route path="/newsmyrna" element={<NewSmyrna />} />
-        <Route path="/playalinda" element={<PlayaLinda />} />
-        <Route path="/sebastian" element={<Sebastian />} />
-        <Route path="/staugustine" element={<StAugustine />} />
-        <Route path="/fortpierce" element={<FortPierce />} />
-        <Route path="/venice" element={<Venice />} />
-        <Route path="/keywest" element={<KeyWest />} />
-        <Route path="/fortlauderdale" element={<FortLauderdale />} />
-        <Route path="/westpalm" element={<WestPalm />} />
-        <Route path="/siesta" element={<Siesta />} />
         <Route path="/about" element={<About />} />
+        <Route path="/homepage" element={<HomePage {...sharedProps} page="home" />} />
+        <Route path="/:beachId" element={<BeachDetail />} />
       </Routes>
     </Router>
   );

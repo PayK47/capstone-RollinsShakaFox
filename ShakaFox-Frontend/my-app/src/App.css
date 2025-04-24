@@ -283,6 +283,11 @@ body.dark-mode {
   color: white;
 }
 
+.dark-mode .beach-btn span {
+  color: white;
+}
+
+
 .dark-mode .beach-score {
   background-color: #333;
   color: #f0f0f0;
