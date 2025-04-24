@@ -47,19 +47,8 @@ function HomePage({
       <div className="app">
         <div style={{ position: 'relative' }}>
           {showOptions && (
-            <div style={{
-              position: 'absolute',
-              top: '60px',
-              right: '0',
-              transform: 'translateY(0)',
-              background: '#fff',
-              border: '1px solid #ddd',
-              borderRadius: '10px',
-              padding: '15px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              zIndex: 1000,
-              width: '250px'
-            }}>
+              <div className="slider-panel">
+
               <div className="slider-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <label>Temperature: {weights.temperature}</label>
                 <input type="range" min="0" max="10" value={weights.temperature} onChange={(e) => setWeights({ ...weights, temperature: parseInt(e.target.value) })} />

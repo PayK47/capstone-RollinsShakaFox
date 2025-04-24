@@ -231,6 +231,27 @@ h1 {
 .slider-container input[type=range] {
   width: 100%;
 }
+.slider-panel {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  transform: translateY(0);
+  border-radius: 12px;
+  padding: 15px;
+  width: 250px;
+  z-index: 1000;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.dark-mode .slider-panel {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
 
 .beach-details p {
   margin: 6px 0;
@@ -297,8 +318,29 @@ body.dark-mode {
   background-color: #388e3c;
 }
 
+.dark-mode h1 {
+  color: white;
+}
+
+.dark-mode .subtitle {
+  color: white;
+}
+
+
 .dark-mode .more-details-link {
   color: #90caf9;
+}
+
+.dark-mode .beach-details {
+  color: white;
+}
+
+.dark-mode .beach-details p {
+  color: white;
+}
+
+.dark-mode .beach-details span {
+  color: white;
 }
 
 .dark-mode .more-details-link:hover {
@@ -307,6 +349,25 @@ body.dark-mode {
 
 .dark-mode .mobile-dropdown {
   background-color: #1f1f1f;
+}
+
+.dark-mode .slider-container {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 15px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .slider-container label {
+  color: white;
+  font-weight: 500;
+}
+
+.dark-mode .slider-container input[type="range"] {
+  accent-color: #4da6ff;
+  background: transparent;
 }
 
 
@@ -360,4 +421,15 @@ body.dark-mode {
   .hamburger-btn {
     display: block;
   }
+}
+
+/* Smooth transitions for the panel and its text */
+.slider-panel,
+.slider-panel * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body,
+.app {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
