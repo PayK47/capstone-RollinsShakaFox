@@ -62,7 +62,24 @@ function App() {
     async function fetchBeachData() {
       try {
         console.log("Starting to fetch beach data...");
-        const beaches = ["miami-beach", "daytona-beach", "clearwater-beach", "panama-city-beach"];
+        const beaches = [
+          "miami-beach",
+          "daytona-beach",
+          "clearwater-beach",
+          "panama-city-beach",
+          "venice-beach",
+          "cocoa-beach",
+          "key-west",
+          "naples-beach",
+          "new-smyrna-beach",
+          "jacksonville-beach",
+          "st-augustine",
+          "fort-lauderdale",
+          "playa-linda",
+          "sebastian-inlet",
+          "fort-pierce-inlet",
+          "siesta-key"
+        ];
         const responses = await Promise.all(
           beaches.map(beach =>
             fetch(`${baseUrl}/florida-beaches?beach=${beach}`)
@@ -175,9 +192,15 @@ function App() {
                           <p>Wave Height: {beach.waveSize} m</p>
                           <p>Swell Period: {beach.waveFrequency} sec</p>
                           <p>Wind Speed: {beach.windSpeed} m/s</p>
-                          <Link to={beachRoutes[beach.name.toLowerCase()] || "#"} className="more-details-link">
-                            More Details →
-                          </Link>
+                          {beachRoutes[beach.name.toLowerCase()] ? (
+                            <Link to={beachRoutes[beach.name.toLowerCase()]} className="more-details-link">
+                              More Details →
+                            </Link>
+                          ) : (
+                            <div className="no-details-text" style={{ fontSize: "0.9rem", color: "#777", marginTop: "8px" }}>
+                              No More Details Available
+                            </div>
+                          )}
 
                         </div>
                       )}
