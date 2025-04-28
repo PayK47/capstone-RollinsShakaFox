@@ -7,7 +7,21 @@ const PORT = process.env.PORT || 3000;
 
 // Enable CORS
 import cors from "cors";
-app.use(cors());
+const allowedOrigins = [
+  "https://shakafox-frontend.vercel.app",
+  "http://localhost:3000" // Optional for local development
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 // Cache object to store data with timestamps
 let cache = {};
