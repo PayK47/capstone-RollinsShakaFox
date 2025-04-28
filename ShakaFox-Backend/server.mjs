@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 // Enable CORS
 import cors from "cors";
 const allowedOrigins = [
-  "https://shakafox-frontend.vercel.app",
+  "https://backend-production-8c35.up.railway.app",
   "http://localhost:3000" // Optional for local development
 ];
 
