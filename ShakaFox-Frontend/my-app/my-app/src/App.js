@@ -7,6 +7,8 @@ import Daytona from './Daytona';
 import Clearwater from './Clearwater';
 import PanamaCity from './PanamaCity';
 
+const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:3000";
+
 function App() {
   const [beachData, setBeachData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,7 +65,7 @@ function App() {
         const beaches = ["miami-beach", "daytona-beach", "clearwater-beach", "panama-city-beach"];
         const responses = await Promise.all(
           beaches.map(beach =>
-            fetch(`/florida-beaches?beach=${beach}`)
+            fetch(`${baseUrl}/florida-beaches?beach=${beach}`)
               .then(response => {
                 if (!response.ok) throw new Error(`Error fetching ${beach}: ${response.status}`);
                 return response.json();
