@@ -9,6 +9,15 @@ body, html {
   font-family: Arial, sans-serif;
 }
 
+body {
+  cursor: url('/public/images/SurfBoard.png'), auto; /* Default cursor for the body */
+}
+
+/* Change cursor to BrokenSurfBoard.png for clickable elements on hover */
+a:hover, button:hover, [role="button"]:hover, input[type="button"]:hover, input[type="submit"]:hover {
+  cursor: url('/public/images/BrokenSurfBoard.png'), auto;
+}
+
 .background-video {
   position: fixed;
   top: 0;
