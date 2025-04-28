@@ -8,6 +8,7 @@ import Clearwater from './Clearwater';
 import PanamaCity from './PanamaCity';
 
 const baseUrl = process.env.REACT_APP_API_BASE_URL || "http://localhost:3000";
+console.log("Base URL:", baseUrl); // Debugging line
 
 function App() {
   const [beachData, setBeachData] = useState([]);
@@ -82,13 +83,13 @@ function App() {
         ];
         const responses = await Promise.all(
           beaches.map(beach =>
-            fetch(`${baseUrl}/florida-beaches?beach=${beach}`)
+            fetch(`${baseUrl}/florida-beaches?beach=${encodeURIComponent(beach)}`)
               .then(response => {
                 if (!response.ok) throw new Error(`Error fetching ${beach}: ${response.status}`);
                 return response.json();
               })
               .catch(err => {
-                console.error(`Fetch error for ${beach}:`, err);
+                console.error(`Fetch error for ${beach}:`, err.message);
                 return { name: beach.replace(/-/g, " "), temperature: "N/A", waveSize: "N/A", waveFrequency: "N/A", windSpeed: "N/A", rank: 0 };
               })
           )
@@ -197,9 +198,9 @@ function App() {
                               More Details →
                             </Link>
                           ) : (
-                            <div className="no-details-text" style={{ fontSize: "0.9rem", color: "#777", marginTop: "8px" }}>
-                              No More Details Available
-                            </div>
+                          <div className="no-details-text" style={{ fontSize: "0.95rem", color: "#999", marginTop: "8px", textAlign: "center" }}>
+                            No More Details Available
+                          </div>
                           )}
 
                         </div>
