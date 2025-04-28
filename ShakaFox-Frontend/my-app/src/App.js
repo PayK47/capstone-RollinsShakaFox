@@ -220,7 +220,7 @@ function App() {
           <button className="gear-btn" onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? '☀️' : '🌙'}
           </button>
-          <button className="gear-btn" onClick={() => setShowOptions(!showOptions)}>⚙️</button>
+          <button className="gear-btn" onClick={() => setShowOptions(!showOptions)}>☰</button>
         </div>
 
         {showMobileMenu && (
