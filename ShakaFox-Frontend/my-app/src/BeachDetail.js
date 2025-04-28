@@ -109,7 +109,7 @@ function BeachDetail() {
             className="wave-icon"
             style={{ color: '#00bcd4', fontSize: `${calculateWaveSize(beachData.waveSize)}px` }}
           />
-          <p>{beachData.waveSize} m</p>
+          <p>{beachData.waveSize * 3.28084 < 1 ? '<1' : (beachData.waveSize * 3.28084).toFixed(2)} ft</p>
         </div>
 
         <div className="grid-item swell-section">
@@ -123,7 +123,7 @@ function BeachDetail() {
             className="wind-icon"
             style={{ color: '#4caf50', fontSize: `${calculateWindSize(beachData.windSpeed)}px` }}
           />
-          <p>{beachData.windSpeed} m/s</p>
+          <p>{(beachData.windSpeed * 2.23694).toFixed(1)} mph</p>
         </div>
       </div>
     </div>
