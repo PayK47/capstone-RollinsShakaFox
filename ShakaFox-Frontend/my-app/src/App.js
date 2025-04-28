@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import HomePage from './HomePage';
 import About from './About';
-import BeachDetail from './BeachDetail'; // Generic beach detail page
+import BeachDetail from './BeachDetail';
 import foxLogo from './assets/Removal-952.png';
 
 const offshoreDirections = {
@@ -38,7 +38,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedVariables, setSelectedVariables] = useState(["temperature", "waveSize", "windSpeed", "swellPeriod"]);
-  const [openRowIndex, setOpenRowIndex] = useState(null);
+  const [openBeachIndex, setOpenBeachIndex] = useState(null);
   const [weights, setWeights] = useState({
     temperature: 5,
     waveHeight: 5,
@@ -49,8 +49,8 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const toggleRow = (index) => {
-    setOpenRowIndex(openRowIndex === index ? null : index);
+  const toggleBeach = (index) => {
+    setOpenBeachIndex(openBeachIndex === index ? null : index);
   };
 
   const calculateRank = (temperature, waveSize, waveFrequency, windSpeed, windDirection, beachName) => {
@@ -62,9 +62,8 @@ function App() {
     const tempRank = Math.min(Math.max((temperature - 65) / 25 * 10, 0), 10);
     ranks.push(Math.pow(tempRank, 1.1) * Math.pow(weights.temperature, power) * scaleFactor);
     totalWeight += Math.pow(weights.temperature, power) * scaleFactor;
-    
-    const waveSizeFT = waveSize * 3.28084;
-    const waveRank = Math.min(Math.max((waveSizeFT - 0.01) / 7.99 * 10, 0), 10);
+
+    const waveRank = Math.min(Math.max((waveSize - 0.01) / 7.99 * 10, 0), 10);
     ranks.push(Math.pow(waveRank, 1.1) * Math.pow(weights.waveHeight, power) * scaleFactor);
     totalWeight += Math.pow(weights.waveHeight, power) * scaleFactor;
 
@@ -155,14 +154,6 @@ function App() {
     fetchBeachData();
   }, [selectedVariables, weights]);
 
-  const toggleVariable = (variable) => {
-    setSelectedVariables((prev) =>
-      prev.includes(variable)
-        ? prev.filter((item) => item !== variable)
-        : [...prev, variable]
-    );
-  };
-
   const beachRoutes = {
     "key west": "/key-west",
     "miami beach": "/miami-beach",
@@ -181,20 +172,23 @@ function App() {
     "st augustine": "/st-augustine",
     "fort pierce inlet": "/fort-pierce-inlet"
   };
-  
 
   const sharedProps = {
     beachData,
     loading,
     error,
     selectedVariables,
-    toggleVariable,
+    toggleVariable: (variable) => setSelectedVariables((prev) =>
+      prev.includes(variable)
+        ? prev.filter((item) => item !== variable)
+        : [...prev, variable]
+    ),
     weights,
     setWeights,
     showOptions,
     setShowOptions,
-    toggleRow,
-    openRowIndex,
+    toggleBeach,
+    openBeachIndex,
     isOffshoreWind,
     beachRoutes
   };
@@ -236,13 +230,30 @@ function App() {
             <NavLink to="/home" className="nav-btn" onClick={() => setShowMobileMenu(false)}>Home Beaches</NavLink>
           </div>
         )}
+
+        {showOptions && (
+          <div className="slider-panel">
+            <div className="slider-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <label>Temperature: {weights.temperature}</label>
+              <input type="range" min="0" max="10" value={weights.temperature} onChange={(e) => setWeights({ ...weights, temperature: parseInt(e.target.value) })} />
+
+              <label>Wave Height: {weights.waveHeight}</label>
+              <input type="range" min="0" max="10" value={weights.waveHeight} onChange={(e) => setWeights({ ...weights, waveHeight: parseInt(e.target.value) })} />
+
+              <label>Swell Period: {weights.swellPeriod}</label>
+              <input type="range" min="0" max="10" value={weights.swellPeriod} onChange={(e) => setWeights({ ...weights, swellPeriod: parseInt(e.target.value) })} />
+
+              <label>Wind Speed: {weights.windSpeed}</label>
+              <input type="range" min="0" max="10" value={weights.windSpeed} onChange={(e) => setWeights({ ...weights, windSpeed: parseInt(e.target.value) })} />
+            </div>
+          </div>
+        )}
       </div>
 
       <Routes>
         <Route path="/" element={<HomePage {...sharedProps} page="all" />} />
         <Route path="/home" element={<HomePage {...sharedProps} page="home" />} />
         <Route path="/about" element={<About />} />
-        <Route path="/homepage" element={<HomePage {...sharedProps} page="home" />} />
         <Route path="/:beachId" element={<BeachDetail />} />
       </Routes>
     </Router>
