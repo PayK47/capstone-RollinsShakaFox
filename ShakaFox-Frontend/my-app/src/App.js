@@ -62,8 +62,9 @@ function App() {
     const tempRank = Math.min(Math.max((temperature - 65) / 25 * 10, 0), 10);
     ranks.push(Math.pow(tempRank, 1.1) * Math.pow(weights.temperature, power) * scaleFactor);
     totalWeight += Math.pow(weights.temperature, power) * scaleFactor;
-
-    const waveRank = Math.min(Math.max((waveSize - 0.01) / 7.99 * 10, 0), 10);
+    
+    const waveSizeFT = waveSize * 3.28084;
+    const waveRank = Math.min(Math.max((waveSizeFT - 0.01) / 7.99 * 10, 0), 10);
     ranks.push(Math.pow(waveRank, 1.1) * Math.pow(weights.waveHeight, power) * scaleFactor);
     totalWeight += Math.pow(weights.waveHeight, power) * scaleFactor;
 
