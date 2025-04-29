@@ -20,7 +20,7 @@ function BeachDetail() {
   useEffect(() => {
     async function fetchBeachDetails() {
       try {
-        const response = await fetch(`/florida-beaches?beach=${beachId}`);
+        const response = await fetch(`/api/florida-beaches?beach=${beachId}`);
         if (!response.ok) throw new Error(`Error fetching ${beachId}`);
         const data = await response.json();
         setBeachData({
