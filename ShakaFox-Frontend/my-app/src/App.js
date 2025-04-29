@@ -140,9 +140,11 @@ function App() {
             windDirection,
             rank
           };
-        }).sort((a, b) => b.rank - a.rank);
+        });
 
-        setBeachData(formattedData);
+        // Sort the data by rank before setting it
+        const sortedData = formattedData.sort((a, b) => b.rank - a.rank);
+        setBeachData(sortedData);
       } catch (error) {
         console.error("General error fetching beach data:", error);
         setError("Failed to load data.");
@@ -220,7 +222,7 @@ function App() {
           <button className="gear-btn" onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? '☀️' : '🌙'}
           </button>
-          <button className="gear-btn" onClick={() => setShowOptions(!showOptions)}>☰</button>
+          <button className="gear-btn" onClick={() => setShowOptions(!showOptions)}>🎚️</button>
         </div>
 
         {showMobileMenu && (
