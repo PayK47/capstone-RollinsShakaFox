@@ -102,7 +102,7 @@ function App() {
 
         const responses = await Promise.all(
           beaches.map(beach =>
-            fetch(`/florida-beaches?beach=${beach}`)
+            fetch(`/api/florida-beaches?beach=${beach}`)
               .then(response => {
                 if (!response.ok) throw new Error(`Error fetching ${beach}: ${response.status}`);
                 return response.json();
