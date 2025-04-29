@@ -356,6 +356,10 @@ body.dark-mode {
   background-color: #388e3c;
 }
 
+body.dark-mode .slider-container label {
+  color: black !important;
+}
+
 .dark-mode h1,
 .dark-mode .subtitle,
 .dark-mode .more-details-link,

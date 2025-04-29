@@ -21,7 +21,7 @@ const About = () => {
             </p>
             <ul>
             <li><strong>Personalized:</strong> Adjust sliders for wave height, crowd tolerance, wind, tides, safety flags, and more.</li>
-            <li><strong>Data‑driven:</strong> We aggregate multiple APIs (e.g., NOAA, Surfline, MagicSeaweed, OpenWeather) plus historical patterns to keep rankings accurate and current.</li>
+            <li><strong>Data‑driven:</strong> We aggregate multiple APIs (e.g., NOAA) plus historical patterns to keep rankings accurate and current.</li>
             <li><strong>Student‑focused:</strong> Optimized for quick mobile checks between classes, with travel times from campus baked in.</li>
             </ul>
         </section>
@@ -52,23 +52,23 @@ const About = () => {
             <tbody>
                 <tr>
                 <td>Payden Knettles</td>
-                <td>Frontend &amp; UI/UX, Maps integration</td>
-                <td>Learned to surf at Cocoa Beach Pier at age 12</td>
+                <td>Frontend &amp; UI, Web hosting</td>
+                <td>Born and raised in Florida</td>
                 </tr>
                 <tr>
                 <td>Tommy Hirsch</td>
                 <td>Backend APIs, data caching &amp; scaling</td>
-                <td>Has written more Python tide‑scrapers than he can count</td>
+                <td>Has look more NOAA API buoys than he can count</td>
                 </tr>
                 <tr>
                 <td>Jac ReVille</td>
                 <td>Ranking algorithm, machine‑learning experiments</td>
-                <td>Once drove 3 hrs pre‑dawn to score a perfect glassy chest‑high session</td>
+                <td>Once first degree sunburn  from being at the beach for too long</td>
                 </tr>
                 <tr>
                 <td>Patrick Lester</td>
-                <td>DevOps &amp; cloud deployment, QA testing</td>
-                <td>Built our CI pipeline to redeploy on every GitHub push</td>
+                <td>DevOps &amp; image manipulation, map posting</td>
+                <td>One three-legged race during 5th grade with Shaka, the Fox </td>
                 </tr>
             </tbody>
             </table>

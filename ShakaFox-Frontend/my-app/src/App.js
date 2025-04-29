@@ -4,6 +4,7 @@ import './App.css';
 import HomePage from './HomePage';
 import About from './About';
 import BeachDetail from './BeachDetail';
+import StaticBeachInfo from './staticBeachInfo'; // <-- import your static beach info page component
 import foxLogo from './assets/Removal-952.png';
 
 const offshoreDirections = {
@@ -256,6 +257,7 @@ function App() {
         <Route path="/" element={<HomePage {...sharedProps} page="all" />} />
         <Route path="/home" element={<HomePage {...sharedProps} page="home" />} />
         <Route path="/about" element={<About />} />
+        <Route path="/static-beach-info" element={<StaticBeachInfo />} /> {/* New static beach info route */}
         <Route path="/:beachId" element={<BeachDetail />} />
       </Routes>
     </Router>
